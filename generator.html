@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#172554">
+  <title>Class Random Name Generator</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <main class="page generator-page">
+    <section class="panel generator-panel">
+      <a class="back-link" href="index.html">← All classes</a>
+      <p class="eyebrow">RANDOM NAME GENERATOR</p>
+      <h1 id="class-title">Class</h1>
+      <p id="class-count" class="intro"></p>
+
+      <div class="result-card" aria-live="polite" aria-atomic="true">
+        <span class="result-label">Selected student</span>
+        <strong id="selected-name">Ready?</strong>
+      </div>
+
+      <button id="pick-button" class="pick-button" type="button">Pick a random name</button>
+      <p class="note">Names can be selected again on future clicks.</p>
+    </section>
+  </main>
+  <script src="names.js"></script>
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const className = params.get('class');
+    const names = CLASS_NAMES[className];
+    const title = document.getElementById('class-title');
+    const count = document.getElementById('class-count');
+    const result = document.getElementById('selected-name');
+    const button = document.getElementById('pick-button');
+
+    if (!names) {
+      title.textContent = 'Class not found';
+      count.textContent = 'Please return to the home page and choose a class.';
+      result.textContent = '—';
+      button.disabled = true;
+    } else {
+      document.title = `${className} Random Name Generator`;
+      title.textContent = className;
+      count.textContent = `${names.length} names available`;
+
+      button.addEventListener('click', () => {
+        button.disabled = true;
+        result.classList.remove('pop');
+        result.textContent = 'Choosing…';
+        let spins = 0;
+        const spin = setInterval(() => {
+          result.textContent = names[Math.floor(Math.random() * names.length)];
+          spins += 1;
+          if (spins >= 10) {
+            clearInterval(spin);
+            const chosen = names[Math.floor(Math.random() * names.length)];
+            result.textContent = chosen;
+            void result.offsetWidth;
+            result.classList.add('pop');
+            button.disabled = false;
+            button.focus();
+          }
+        }, 65);
+      });
+    }
+  </script>
+</body>
+</html>

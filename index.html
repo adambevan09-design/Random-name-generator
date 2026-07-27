@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#172554">
+  <title>Random Name Generator</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <main class="page home-page">
+    <section class="panel">
+      <p class="eyebrow">CLASSROOM TOOL</p>
+      <h1>Random Name Generator</h1>
+      <p class="intro">Choose a class to randomly select a student.</p>
+      <div id="class-grid" class="class-grid" aria-label="Classes"></div>
+    </section>
+  </main>
+  <script src="names.js"></script>
+  <script>
+    const grid = document.getElementById('class-grid');
+    Object.keys(CLASS_NAMES).forEach(className => {
+      const link = document.createElement('a');
+      link.className = 'class-button';
+      link.href = `generator.html?class=${encodeURIComponent(className)}`;
+      link.innerHTML = `<span>${className}</span><small>${CLASS_NAMES[className].length} names</small>`;
+      grid.appendChild(link);
+    });
+  </script>
+</body>
+</html>
